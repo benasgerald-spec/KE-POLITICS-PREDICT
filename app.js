@@ -2221,12 +2221,12 @@ if (require.main === module) {
 ╔═══════════════════════════════════════════════════════════════╗
 ║      🚀 KENYAPOLITICS PREDICT PLATFORM STARTED!             ║
 ╠═══════════════════════════════════════════════════════════════╣
-║  🌐 Server: http://0.0.0.0:\${PORT}                          ║
-║  📊 Health: http://0.0.0.0:\${PORT}/health                  ║
-║  📱 Frontend: http://0.0.0.0:\${PORT}/                      ║
-║  🗄️  Database: \${mongoose.connection.readyState === 1 ? '✅ Connected' : '❌ Disconnected'} ║
-║  🔧 Environment: \${process.env.NODE_ENV || 'development'}   ║
-║  📈 Node.js: \${process.version}                            ║
+║  🌐 Server: http://0.0.0.0:${PORT}                          ║
+║  📊 Health: http://0.0.0.0:${PORT}/health                  ║
+║  📱 Frontend: http://0.0.0.0:${PORT}/                      ║
+║  🗄️  Database: ${mongoose.connection.readyState === 1 ? '✅ Connected' : '❌ Disconnected'} ║
+║  🔧 Environment: ${process.env.NODE_ENV || 'development'}   ║
+║  📈 Node.js: ${process.version}                            ║
 ╚═══════════════════════════════════════════════════════════════╝
 
 📋 AVAILABLE ENDPOINTS:
@@ -2244,8 +2244,8 @@ if (require.main === module) {
 
 🔐 SECURITY NOTES:
    • MongoDB IP Whitelist: 0.0.0.0/0 (for testing)
-   • JWT Secret: \${process.env.JWT_SECRET ? '✅ Set' : '❌ Missing'}
-   • M-Pesa Credentials: \${process.env.MPESA_CONSUMER_KEY ? '✅ Configured' : '❌ Missing'}
+   • JWT Secret: ${process.env.JWT_SECRET ? '✅ Set' : '❌ Missing'}
+   • M-Pesa Credentials: ${process.env.MPESA_CONSUMER_KEY ? '✅ Configured' : '❌ Missing'}
 
 📞 SUPPORT:
    • Check /health for API status
@@ -2256,7 +2256,7 @@ if (require.main === module) {
 
   // Graceful shutdown handlers
   const gracefulShutdown = (signal) => {
-    console.log(\`\\n🛑 Received \${signal}. Shutting down gracefully...\`);
+    console.log(`\n🛑 Received ${signal}. Shutting down gracefully...`);
     
     server.close(() => {
       console.log('✅ HTTP server closed.');
