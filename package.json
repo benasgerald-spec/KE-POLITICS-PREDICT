@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "Political prediction market for Kenyan elections",
   "main": "app.js",
-  // 🔽 ADD THIS "engines" SECTION RIGHT HERE 🔽
   "engines": {
     "node": ">=18.0.0"
   },
-  // 🔼 END OF ADDITION 🔼
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js"
