@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const cors = require('cors');
-const path = require('path'); // ADDED: Required for file paths
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -17,12 +17,53 @@ app.use(express.json({ limit: '10mb' }));
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? process.env.BASE_URL 
-    : 'http://localhost:3000',
+    : ['http://localhost:3000', 'http://localhost:8080'],
   credentials: true
 }));
 
-// ADDED: Serve static files from public directory
+// Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ========== CONTENT SECURITY POLICY (CSP) MIDDLEWARE ==========
+// FIXES: 'Content Security Policy blocks the use of eval' error
+app.use((req, res, next) => {
+  // Set CSP headers to allow necessary resources
+  res.setHeader(
+    'Content-Security-Policy',
+    [
+      // Default policy - deny everything by default
+      "default-src 'self'",
+      
+      // Allow scripts from self, Font Awesome CDN, and 'unsafe-eval' for Font Awesome
+      "script-src 'self' https://cdnjs.cloudflare.com 'unsafe-eval'",
+      
+      // Allow styles from self, Font Awesome CDN, and 'unsafe-inline' for Tailwind
+      "style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'",
+      
+      // Allow fonts from self, Font Awesome CDN, and data: URIs
+      "font-src 'self' https://cdnjs.cloudflare.com data:",
+      
+      // Allow images from any source (self, data:, https)
+      "img-src 'self' data: https:",
+      
+      // Allow connections to self and APIs
+      "connect-src 'self'",
+      
+      // Allow iframes from self only
+      "frame-src 'self'",
+      
+      // Allow object/embed from self only
+      "object-src 'self'",
+      
+      // Allow media from self only
+      "media-src 'self'",
+      
+      // Allow manifest from self only
+      "manifest-src 'self'"
+    ].join('; ')
+  );
+  next();
+});
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -1739,6 +1780,7 @@ if (require.main === module) {
    • MongoDB IP Whitelist: 0.0.0.0/0 (for testing)
    • JWT Secret: ${process.env.JWT_SECRET ? '✅ Set' : '❌ Missing'}
    • M-Pesa Credentials: ${process.env.MPESA_CONSUMER_KEY ? '✅ Configured' : '❌ Missing'}
+   • Content Security Policy: ✅ Active & Configured
 
 📞 SUPPORT:
    • Check /health for API status
